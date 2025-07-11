@@ -5,9 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mbc.domain.BoardVO;
+import org.mbc.mapper.BoardMapperTests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
@@ -16,18 +18,21 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class BoardServiceTests {
 
-	@Setter (onMethod_= @Autowired)
-	private BoardService service;
-	// 인터페이스에 연결된 구현 클래스가 자동으로 연결. BoardServiceImpl
+	@Setter(onMethod_ = @Autowired)
+	private BoardService service; // 인터페이스를 필드로 선언 하였다.
+	// 인터페이스에 연결된 구현 클래스가 자동으로 연동된다. BoardServiceImpl
 	
 	@Test
 	public void testExist() {
-		log.info("=========================================");
-		log.info(service); // 인터페이스를 호출
-		assertNotNull(service); // 빈 객체가 아님을 테스트 함
-		log.info("=========================================");
 		
-		// org.mbc.service.BoardServiceImpl
+		log.info("==================");
+		log.info(service); // 인터페이스를 호출해보자.
+		assertNotNull(service); // 빈객체가 아님을 테스트 한다.
+		log.info("=================="); 
+		
+		//  org.mbc.service.BoardServiceImpl@3c78e551
+		// 인터페이스를 호출했는데 구현클래스가 호출됨을 확인한다. 
+		// 구현클래스에 구현메서드를 실행문에 작성하면 동작하겠구나.!!!!
 	}
 	
 	@Test
@@ -40,18 +45,18 @@ public class BoardServiceTests {
 		
 		service.register(board);
 		
-		log.info("========================");
+		log.info("======================");
 		log.info("생성된 게시물의 번호 : " + board.getBno());
-		log.info("========================");
-				
+		log.info("======================");
 	}
 	
 	@Test
 	public void testGetList() {
 		
-		log.info("========================");
+		log.info("======================");
 		service.getList().forEach(board -> log.info(board));
-		log.info("========================");
+		log.info("======================");
+		
 	}
 	
 	@Test
@@ -62,13 +67,13 @@ public class BoardServiceTests {
 	
 	@Test
 	public void testDelete() {
-		log.info("삭제 된 결과 : " +service.remove(2L));
+		log.info("삭제된 결과 : " + service.remove(2L));
 	}
 	
 	@Test
 	public void testUpdate() {
 		
-		BoardVO board = service.get(1L);
+		BoardVO board = service.get(1L); // 1번게시물 가져와!!!
 		
 		if(board == null) {
 			log.info("찾는 게시물이 없습니다. ");
@@ -77,5 +82,8 @@ public class BoardServiceTests {
 		
 		board.setTitle("서비스에서 수정된 제목");
 		log.info("수정된 결과 출력 : " + service.modify(board));
+		
 	}
 }
+
+
